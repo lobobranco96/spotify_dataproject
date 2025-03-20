@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials # type: ignore
 import logging
 
 
@@ -33,7 +33,7 @@ class DataIngestion:
             logging.error(f"Autenticação falhou: {e}")
             raise
 
-    def fetch_and_save_playlist_tracks(self, playlist_link, raw_data, filename=None):
+    def fetch_and_save_playlist_tracks(self, playlist_link, s3_client, BUCKET_NAME, filename=None):
         """Fetch tracks from a Spotify playlist and save to JSON.
 
         Args:
@@ -63,19 +63,24 @@ class DataIngestion:
             data = {'items': all_tracks}
             logging.info("Playlist data fetched successfully.")
             
-            
-           #os.makedirs(raw_data, exist_ok=True)
-            
             if not filename:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"playlist_{timestamp}.json"
 
-            file_path = os.path.join(raw_data, filename)
-            with open(file_path, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-            logging.info(f"Data saved to file: {file_path}")
+            json_data = json.dumps(data, ensure_ascii=False, indent=4)
 
-            return file_path
+            # Fazendo o upload para o MinIO
+            s3_client.put_object(
+                Bucket=BUCKET_NAME,
+                Key=filename,
+                Body=json_data,
+                ContentType="application/json"
+            )
+            logging.info(f"JSON salvo no MinIO: s3://{BUCKET_NAME}/{filename}")
+
+        except Exception as e:
+            logging.error(f"Erro ao salvar no MinIO: {e}")
+            
         except Exception as e:
             logging.error(f"Error in fetching or saving playlist data: {e}")
             raise

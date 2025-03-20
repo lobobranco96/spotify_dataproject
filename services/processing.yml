@@ -1,20 +1,33 @@
-x-common-log-config: &default_config
+---
+x-common-log-config:
   networks:
     - astro_default
   env_file:
     - ./conf/.credentials.conf
     - .env
   healthcheck:
-    test: [ "CMD", "ls" ]
+    test:
+      - CMD
+      - ls
     timeout: 45s
     interval: 10s
     retries: 10
     start_period: 10s
-
-
-x-spark-worker-default: &spark_worker_default
+x-spark-worker-default:
   build: ../docker/spark
-  <<: *default_config
+  networks:
+    - astro_default
+  env_file:
+    - ./conf/.credentials.conf
+    - .env
+  healthcheck:
+    test:
+      - CMD
+      - ls
+    timeout: 45s
+    interval: 10s
+    retries: 10
+    start_period: 10s
   environment:
     - SPARK_MODE=worker
     - SPARK_MASTER_URL=spark://spark-master:7077
@@ -25,15 +38,23 @@ x-spark-worker-default: &spark_worker_default
     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
     - SPARK_SSL_ENABLED=no
     - SPARK_USER=spark
-  networks:
-  - astro_default
-
-
 services:
   spark-master:
     build: ../docker/customized/spark
     container_name: spark-master
-    <<: *default_config
+    networks:
+      - astro_default
+    env_file:
+      - ./conf/.credentials.conf
+      - .env
+    healthcheck:
+      test:
+        - CMD
+        - ls
+      timeout: 45s
+      interval: 10s
+      retries: 10
+      start_period: 10s
     environment:
       - SPARK_MODE=master
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -46,20 +67,61 @@ services:
       - ../mnt/spark_job:/spark_job/
       - ../credentials:/credentials/
     ports:
-      - "9090:8080"
-      - "7077:7077"
-      - '18080:8080'
-    networks:
-      - astro_default
-
+      - 9090:8080
+      - 7077:7077
+      - 18080:8080
   spark-worker-1:
     container_name: spark-worker-1
-    <<: *spark_worker_default
-
+    build: ../docker/spark
+    networks:
+      - astro_default
+    env_file:
+      - ./conf/.credentials.conf
+      - .env
+    healthcheck:
+      test:
+        - CMD
+        - ls
+      timeout: 45s
+      interval: 10s
+      retries: 10
+      start_period: 10s
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
   spark-worker-2:
     container_name: spark-worker-2
-    <<: *spark_worker_default
-
+    build: ../docker/spark
+    networks:
+      - astro_default
+    env_file:
+      - ./conf/.credentials.conf
+      - .env
+    healthcheck:
+      test:
+        - CMD
+        - ls
+      timeout: 45s
+      interval: 10s
+      retries: 10
+      start_period: 10s
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
 networks:
   astro_default:
     driver: bridge
