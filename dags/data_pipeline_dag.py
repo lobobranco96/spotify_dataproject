@@ -5,6 +5,7 @@ from python_code  import config
 from dotenv import load_dotenv
 
 from airflow.decorators import dag, task
+from airflow.operators.empty import EmptyOperator
 from pendulum import datetime
 import boto3
 
@@ -27,33 +28,40 @@ s3_client = boto3.client(
     aws_access_key_id=MINIO_ACCESS_KEY,
     aws_secret_access_key=MINIO_SECRET_KEY
 )
-RAW_DATA_BUCKET="raw-data"
+RAW_DATA_BUCKET="raw"
 
 @dag(
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2024, 3, 19),
     schedule="@daily",
     catchup=False,
     doc_md=__doc__,
     default_args={"owner": "Astro", "retries": 3},
-    tags=["example"],
 )
 def spotify_data_pipeline():
+
+    init = EmptyOperator(task_id="inicio")
+    finish = EmptyOperator(task_id="fim_pipeline")
+
     @task
     def fetch_data():
         """
-        Fetch Spotify playlist data and save it locally.
-        Returns the path to the saved JSON file.
+        Busca os dados da playlist no Spotify e os salva no MinIO.
         """
-        logging.info("Starting Spotify data ingestion")
-        data_ingestion = DataIngestion(client_id=client_id, client_secret=client_secret)
+        logging.info("Iniciando ingestão de dados do Spotify")
+     #  data_ingestion = DataIngestion(client_id=client_id, client_secret=client_secret)
 
-        file_path = data_ingestion.fetch_and_save_playlist_tracks(
-            playlist_link=config.playlist_link,
-            s3_client=s3_client,
-            BUCKET_NAME=RAW_DATA_BUCKET
-        )
-        logging.info(f"Fetched data file at {file_path}")
-    
-        fetch_data
- 
+        print(s3_client.list_buckets()) 
+       #file = data_ingestion.fetch_and_save_playlist_tracks(
+        #   playlist_link=config.playlist_link,
+         #  s3_client=s3_client,
+          # BUCKET_NAME=config.raw_bucket
+       #)
+#       file
+    # Criando as tarefas corretamente
+    fetch_data_task = fetch_data()
+
+    # Definição da sequência do pipeline
+    init >> fetch_data_task >> finish
+
+# Instancia o DAG no Airflow
 spotify_data_pipeline()

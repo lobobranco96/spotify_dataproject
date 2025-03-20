@@ -4,6 +4,7 @@ from datetime import datetime
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials # type: ignore
 import logging
+import io
 
 
 class DataIngestion:
@@ -68,12 +69,14 @@ class DataIngestion:
                 filename = f"playlist_{timestamp}.json"
 
             json_data = json.dumps(data, ensure_ascii=False, indent=4)
+            json_bytes = json_data.encode("utf-8")  # Converte para bytes
+            file_obj = io.BytesIO(json_bytes)  # Cria um objeto de arquivo na memória
 
             # Fazendo o upload para o MinIO
             s3_client.put_object(
                 Bucket=BUCKET_NAME,
                 Key=filename,
-                Body=json_data,
+                Body=file_obj,
                 ContentType="application/json"
             )
             logging.info(f"JSON salvo no MinIO: s3://{BUCKET_NAME}/{filename}")
