@@ -11,3 +11,6 @@ airflow.cfg
 airflow.db
 backup/
 spotify_credentials.txt
+run.txt
+astro_test/
+services/conf/

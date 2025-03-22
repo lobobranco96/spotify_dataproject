@@ -1,4 +1,15 @@
-version: '3'
+x-common-log-config: &default_config
+  networks:
+    - spotify_project
+  env_file:
+    - ./conf/.credentials.conf
+
+x-common-healthcheck-default: &default_healthcheck
+  timeout: 45s
+  interval: 10s
+  retries: 10
+  start_period: 10s
+
 services:
   minio:
     image: minio/minio:latest
@@ -17,16 +28,12 @@ services:
       - lake_minio_vol:/data
       - ./minio/minio-client:/root/.mc
     healthcheck:
-      test:
-        - CMD
-        - curl
-        - -f
-        - http://localhost:9000/minio/health/live
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
     networks:
-      - astro_default
+      - spotify_project
 
   minio-bucket:
     image: minio/mc:latest
@@ -54,14 +61,12 @@ services:
       - AWS_SECRET_ACCESS_KEY=password
       - AWS_REGION=us-east-1
       - AWS_DEFAULT_REGION=us-east-1
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=password
     networks:
-      - astro_default
+      - spotify_project
 
 volumes:
   lake_minio_vol:
 
 networks:
-  astro_default:
-    driver: bridge
+  spotify_project:
+    name: spotify_project

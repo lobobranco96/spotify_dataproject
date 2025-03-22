@@ -2,12 +2,12 @@
 x-airflow-common-networks:
   &airflow-common-networks
   networks:
-  - project_network
+  - spotify_project
 
 x-airflow-common: &airflow-common
-  build: ../docker/customized/airflow
+  build: ../docker/airflow
   networks:
-    - project_network
+    - spotify_project
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
@@ -36,7 +36,7 @@ services:
     container_name: postgres_airflow
     restart: always
     networks:
-      - lakehouse_network
+      - spotify_project
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -150,5 +150,5 @@ volumes:
   pg_airflow_vol:
 
 networks:
-  project_network:
-    name: project_network
+  spotify_project:
+    name: spotify_project
