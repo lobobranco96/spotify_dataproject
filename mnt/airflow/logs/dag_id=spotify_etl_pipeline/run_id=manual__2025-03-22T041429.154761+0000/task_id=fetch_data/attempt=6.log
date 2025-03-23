@@ -1,0 +1,20 @@
+[2025-03-22T04:27:54.308+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2025-03-22T04:27:54.340+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [queued]>
+[2025-03-22T04:27:54.348+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [queued]>
+[2025-03-22T04:27:54.349+0000] {taskinstance.py:2306} INFO - Starting attempt 6 of 7
+[2025-03-22T04:27:54.389+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): fetch_data> on 2025-03-22 04:14:29.154761+00:00
+[2025-03-22T04:27:54.395+0000] {standard_task_runner.py:63} INFO - Started process 320 to run task
+[2025-03-22T04:27:54.398+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'spotify_etl_pipeline', 'fetch_data', 'manual__2025-03-22T04:14:29.154761+00:00', '--job-id', '7', '--raw', '--subdir', 'DAGS_FOLDER/data_pipeline_dag.py', '--cfg-path', '/tmp/tmpbhne2qyn']
+[2025-03-22T04:27:54.401+0000] {standard_task_runner.py:91} INFO - Job 7: Subtask fetch_data
+[2025-03-22T04:27:54.478+0000] {task_command.py:426} INFO - Running <TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [running]> on host ffe4e0703eb1
+[2025-03-22T04:27:54.607+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='lobobranco' AIRFLOW_CTX_DAG_ID='spotify_etl_pipeline' AIRFLOW_CTX_TASK_ID='fetch_data' AIRFLOW_CTX_EXECUTION_DATE='2025-03-22T04:14:29.154761+00:00' AIRFLOW_CTX_TRY_NUMBER='6' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-03-22T04:14:29.154761+00:00'
+[2025-03-22T04:27:54.609+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2025-03-22T04:27:54.621+0000] {data_pipeline_dag.py:59} INFO - Iniciando ingestão de dados do Spotify
+[2025-03-22T04:27:54.622+0000] {fetch_spotify_data.py:32} INFO - Spotify client iniciou com sucesso.
+[2025-03-22T04:27:54.666+0000] {logging_mixin.py:188} INFO - {'ResponseMetadata': {'RequestId': '182F058AD3C9101B', 'HostId': 'dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8', 'HTTPStatusCode': 200, 'HTTPHeaders': {'accept-ranges': 'bytes', 'content-length': '453', 'content-type': 'application/xml', 'server': 'MinIO', 'strict-transport-security': 'max-age=31536000; includeSubDomains', 'vary': 'Origin, Accept-Encoding', 'x-amz-bucket-region': 'us-east-1', 'x-amz-id-2': 'dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8', 'x-amz-request-id': '182F058AD3C9101B', 'x-content-type-options': 'nosniff', 'x-ratelimit-limit': '2650', 'x-ratelimit-remaining': '2650', 'x-xss-protection': '1; mode=block', 'date': 'Sat, 22 Mar 2025 04:27:54 GMT'}, 'RetryAttempts': 0}, 'Buckets': [{'Name': 'processed', 'CreationDate': datetime.datetime(2025, 3, 22, 4, 4, 21, 383000, tzinfo=tzlocal())}, {'Name': 'raw', 'CreationDate': datetime.datetime(2025, 3, 22, 4, 4, 21, 238000, tzinfo=tzlocal())}], 'Owner': {'DisplayName': 'minio', 'ID': '02d6176db174dc93cb1b899f7c6078f08654445fe8cf1b6ce98d8855f66bdbf4'}}
+[2025-03-22T04:27:54.667+0000] {python.py:237} INFO - Done. Returned value was: None
+[2025-03-22T04:27:54.668+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2025-03-22T04:27:54.679+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=spotify_etl_pipeline, task_id=fetch_data, run_id=manual__2025-03-22T04:14:29.154761+00:00, execution_date=20250322T041429, start_date=20250322T042754, end_date=20250322T042754
+[2025-03-22T04:27:54.773+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2025-03-22T04:27:54.805+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-03-22T04:27:54.827+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

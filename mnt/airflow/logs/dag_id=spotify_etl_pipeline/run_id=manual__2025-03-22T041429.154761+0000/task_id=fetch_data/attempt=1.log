@@ -1,0 +1,51 @@
+[2025-03-22T04:14:32.921+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2025-03-22T04:14:32.961+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [queued]>
+[2025-03-22T04:14:32.969+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [queued]>
+[2025-03-22T04:14:32.970+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2025-03-22T04:14:33.088+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): fetch_data> on 2025-03-22 04:14:29.154761+00:00
+[2025-03-22T04:14:33.093+0000] {standard_task_runner.py:63} INFO - Started process 175 to run task
+[2025-03-22T04:14:33.096+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'spotify_etl_pipeline', 'fetch_data', 'manual__2025-03-22T04:14:29.154761+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/data_pipeline_dag.py', '--cfg-path', '/tmp/tmpekozxwdh']
+[2025-03-22T04:14:33.098+0000] {standard_task_runner.py:91} INFO - Job 2: Subtask fetch_data
+[2025-03-22T04:14:33.202+0000] {task_command.py:426} INFO - Running <TaskInstance: spotify_etl_pipeline.fetch_data manual__2025-03-22T04:14:29.154761+00:00 [running]> on host ffe4e0703eb1
+[2025-03-22T04:14:33.384+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='lobobranco' AIRFLOW_CTX_DAG_ID='spotify_etl_pipeline' AIRFLOW_CTX_TASK_ID='fetch_data' AIRFLOW_CTX_EXECUTION_DATE='2025-03-22T04:14:29.154761+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-03-22T04:14:29.154761+00:00'
+[2025-03-22T04:14:33.386+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2025-03-22T04:14:33.398+0000] {data_pipeline_dag.py:59} INFO - Iniciando ingestão de dados do Spotify
+[2025-03-22T04:14:33.399+0000] {fetch_spotify_data.py:34} ERROR - Autenticação falhou: No client_id. Pass it or set a SPOTIPY_CLIENT_ID environment variable.
+[2025-03-22T04:14:33.400+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2025-03-22T04:14:33.400+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/data_pipeline_dag.py", line 60, in fetch_data
+    data_ingestion = DataIngestion(client_id=client_id, client_secret=client_secret)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/python/extract/fetch_spotify_data.py", line 27, in __init__
+    client_credentials_manager=SpotifyClientCredentials(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/spotipy/oauth2.py", line 170, in __init__
+    self.client_id = client_id
+    ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/spotipy/oauth2.py", line 65, in client_id
+    self._client_id = _ensure_value(val, "client_id")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/spotipy/oauth2.py", line 41, in _ensure_value
+    raise SpotifyOauthError(msg)
+spotipy.exceptions.SpotifyOauthError: No client_id. Pass it or set a SPOTIPY_CLIENT_ID environment variable.
+[2025-03-22T04:14:33.425+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=spotify_etl_pipeline, task_id=fetch_data, run_id=manual__2025-03-22T04:14:29.154761+00:00, execution_date=20250322T041429, start_date=20250322T041432, end_date=20250322T041433
+[2025-03-22T04:14:33.471+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 2 for task fetch_data (No client_id. Pass it or set a SPOTIPY_CLIENT_ID environment variable.; 175)
+[2025-03-22T04:14:33.510+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2025-03-22T04:14:33.543+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-03-22T04:14:33.572+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

@@ -9,5 +9,10 @@ airflow-webserver.pid
 webserver_config.py
 airflow.cfg
 airflow.db
+mnt/airflow/logs/scheduler/latest/
 backup/
 spotify_credentials.txt
+run.txt
+astro_test/
+services/conf/
+mnt/airflow/dags/jars/
