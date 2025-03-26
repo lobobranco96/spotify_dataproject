@@ -68,17 +68,14 @@ class DataIngestion:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"playlist_{timestamp}.json"
 
-            json_data = json.dumps(data, ensure_ascii=False, indent=4)
-            json_bytes = json_data.encode("utf-8")  # Converte para bytes
-            file_obj = io.BytesIO(json_bytes)  # Cria um objeto de arquivo na memória
-
-            # Fazendo o upload para o MinIO
+            json_data = json.dumps(data, ensure_ascii=False)  # Remova o indent
             s3_client.put_object(
                 Bucket=BUCKET_NAME,
                 Key=filename,
-                Body=file_obj,
+                Body=json_data,
                 ContentType="application/json"
             )
+
             logging.info(f"JSON salvo no MinIO: s3://{BUCKET_NAME}/{filename}")
             file_path = f"s3://{BUCKET_NAME}/{filename}"
             return file_path

@@ -1,0 +1,26 @@
+[2025-03-26T21:05:25.116+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2025-03-26T21:05:25.152+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_pipeline.fetch_data manual__2025-03-26T13:33:39.761724+00:00 [queued]>
+[2025-03-26T21:05:25.161+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_pipeline.fetch_data manual__2025-03-26T13:33:39.761724+00:00 [queued]>
+[2025-03-26T21:05:25.162+0000] {taskinstance.py:2306} INFO - Starting attempt 2 of 3
+[2025-03-26T21:05:25.226+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): fetch_data> on 2025-03-26 13:33:39.761724+00:00
+[2025-03-26T21:05:25.232+0000] {standard_task_runner.py:63} INFO - Started process 180 to run task
+[2025-03-26T21:05:25.235+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'etl_pipeline', 'fetch_data', 'manual__2025-03-26T13:33:39.761724+00:00', '--job-id', '45', '--raw', '--subdir', 'DAGS_FOLDER/etl_pipeline.py', '--cfg-path', '/tmp/tmprl0ahw4k']
+[2025-03-26T21:05:25.238+0000] {standard_task_runner.py:91} INFO - Job 45: Subtask fetch_data
+[2025-03-26T21:05:25.337+0000] {task_command.py:426} INFO - Running <TaskInstance: etl_pipeline.fetch_data manual__2025-03-26T13:33:39.761724+00:00 [running]> on host d77e0d0606fb
+[2025-03-26T21:05:25.614+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='lobobranco' AIRFLOW_CTX_DAG_ID='etl_pipeline' AIRFLOW_CTX_TASK_ID='fetch_data' AIRFLOW_CTX_EXECUTION_DATE='2025-03-26T13:33:39.761724+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-03-26T13:33:39.761724+00:00'
+[2025-03-26T21:05:25.615+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2025-03-26T21:05:25.677+0000] {etl_pipeline.py:58} INFO - Iniciando ingestão de dados do Spotify
+[2025-03-26T21:05:25.678+0000] {fetch_spotify_data.py:32} INFO - Spotify client iniciou com sucesso.
+[2025-03-26T21:05:25.678+0000] {fetch_spotify_data.py:53} INFO - Buscando dados da playlist para URI: 5GNK6UZpTVUMuO4L1H7ums
+[2025-03-26T21:05:25.984+0000] {cache_handler.py:100} WARNING - Couldn't write token to cache at: .cache
+[2025-03-26T21:05:27.044+0000] {cache_handler.py:100} WARNING - Couldn't write token to cache at: .cache
+[2025-03-26T21:05:27.855+0000] {cache_handler.py:100} WARNING - Couldn't write token to cache at: .cache
+[2025-03-26T21:05:28.896+0000] {cache_handler.py:100} WARNING - Couldn't write token to cache at: .cache
+[2025-03-26T21:05:29.495+0000] {fetch_spotify_data.py:65} INFO - Playlist data fetched successfully.
+[2025-03-26T21:05:29.662+0000] {fetch_spotify_data.py:79} INFO - JSON salvo no MinIO: s3://raw/playlist_20250326_210529.json
+[2025-03-26T21:05:29.668+0000] {python.py:237} INFO - Done. Returned value was: s3://raw/playlist_20250326_210529.json
+[2025-03-26T21:05:29.669+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2025-03-26T21:05:29.721+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=etl_pipeline, task_id=fetch_data, run_id=manual__2025-03-26T13:33:39.761724+00:00, execution_date=20250326T133339, start_date=20250326T210525, end_date=20250326T210529
+[2025-03-26T21:05:29.831+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2025-03-26T21:05:29.865+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-03-26T21:05:29.885+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

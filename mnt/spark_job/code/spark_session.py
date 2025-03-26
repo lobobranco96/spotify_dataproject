@@ -1,30 +1,30 @@
-import os
 import logging
-from dotenv import load_dotenv
-
 import pyspark
 from pyspark.sql import SparkSession
 
+# Configuração do logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-S3_ENDPOINT = os.getenv('S3_ENDPOINT')
-AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
-def spark_session():
-    conf = (
-    pyspark.SparkConf()
-    .set("spark.hadoop.fs.s3a.access.key", AWS_ACCESS_KEY)
-    .set("spark.hadoop.fs.s3a.secret.key", AWS_SECRET_KEY)
-    .set("spark.hadoop.fs.s3a.endpoint", S3_ENDPOINT)
-    .set("spark.hadoop.fs.s3a.path.style.access", "true")
-    .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-    )
+def create_spark_session():
+    try:
+        logger.info("Iniciando a configuração da Spark Session")
+        
+        conf = (
+            pyspark.SparkConf()
+            .set("spark.master", "spark://spark-master:7077")
+        )
+        
+        spark = SparkSession.builder \
+            .appName("Minio Integration with PySpark") \
+            .config(conf=conf) \
+            .getOrCreate()
+        
+        logger.info("Spark Session criada com sucesso")
+        return spark
+    
+    except Exception as e:
+        logger.error("Erro ao criar a Spark Session", exc_info=True)
+        raise
 
-    spark = SparkSession.builder \
-    .appName("Minio Integration with PySpark") \
-    .config(conf=conf) \
-    .getOrCreate()
-    logger.info("spark session %s", spark)
-
-    return spark

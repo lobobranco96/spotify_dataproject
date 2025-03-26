@@ -1,15 +1,3 @@
-x-common-log-config: &default_config
-  networks:
-    - spotify_project
-  env_file:
-    - ./conf/.credentials.conf
-
-x-common-healthcheck-default: &default_healthcheck
-  timeout: 45s
-  interval: 10s
-  retries: 10
-  start_period: 10s
-
 services:
   minio:
     image: minio/minio:latest
@@ -26,8 +14,8 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - lake_minio_vol:/data
-      - ./data:/data
-      - ./minio/minio-client:/root/.mc
+      - ../mnt/minio:/data
+      - ../mnt/minio/minio-client:/root/.mc
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s

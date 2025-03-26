@@ -1,32 +1,18 @@
----
-x-common-log-config:
+x-common-log-config: &default_config
   networks:
-    - spotify_project
+      - spotify_project
   env_file:
-    - ./conf/.credentials.conf
-    - .env
+      - ./conf/.credentials.conf
   healthcheck:
-    test:
-      - CMD
-      - ls
+    test: [ "CMD", "ls" ]
     timeout: 45s
     interval: 10s
     retries: 10
     start_period: 10s
-x-spark-worker-default:
+
+x-spark-worker-default: &spark_worker_default
   build: ../docker/spark
-  networks:
-    - astro_default
-  env_file:
-    - ./conf/.credentials.conf
-  healthcheck:
-    test:
-      - CMD
-      - ls
-    timeout: 45s
-    interval: 10s
-    retries: 10
-    start_period: 10s
+  <<: *default_config
   environment:
     - SPARK_MODE=worker
     - SPARK_MASTER_URL=spark://spark-master:7077
@@ -37,22 +23,14 @@ x-spark-worker-default:
     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
     - SPARK_SSL_ENABLED=no
     - SPARK_USER=spark
+  networks:
+      - spotify_project
+
 services:
   spark-master:
     build: ../docker/spark
     container_name: spark-master
-    networks:
-      - spotify_project
-    env_file:
-      - ./conf/.credentials.conf
-    healthcheck:
-      test:
-        - CMD
-        - ls
-      timeout: 45s
-      interval: 10s
-      retries: 10
-      start_period: 10s
+    <<: *default_config
     environment:
       - SPARK_MODE=master
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -61,62 +39,22 @@ services:
       - SPARK_METRICS_MASTER_ENABLED=true
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
+      - SPARK_MASTER_HOST=spark-master
     volumes:
       - ../mnt/spark_job:/spark_job/
     ports:
       - 9090:8080
       - 7077:7077
       - 18080:8080
+
   spark-worker-1:
     container_name: spark-worker-1
-    build: ../docker/spark
-    networks:
-      - spotify_project
-    env_file:
-      - ./conf/.credentials.conf
-    healthcheck:
-      test:
-        - CMD
-        - ls
-      timeout: 45s
-      interval: 10s
-      retries: 10
-      start_period: 10s
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
+    <<: *spark_worker_default
+
   spark-worker-2:
     container_name: spark-worker-2
-    build: ../docker/spark
-    networks:
-      - spotify_project
-    env_file:
-      - ./conf/.credentials.conf
-    healthcheck:
-      test:
-        - CMD
-        - ls
-      timeout: 45s
-      interval: 10s
-      retries: 10
-      start_period: 10s
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
+    <<: *spark_worker_default
       
 networks:
   spotify_project:
+    name: spotify_project
