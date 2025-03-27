@@ -9,9 +9,6 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 3️⃣ **Processamento com Spark**: Airflow dispara um job Spark via `SparkSubmitOperator` para transformar os dados.  
 4️⃣ **Armazenamento Processado (Processed Layer)**: Os dados transformados são carregados em outro bucket no MinIO.
 
-![Arquitetura da Pipeline](https://github.com/user-attachments/assets/c1fc1ea6-8431-47eb-8786-a40b8a6381b7)  
-*(Substitua por uma imagem do fluxo da arquitetura)*
-
 ## 🛠️ Tecnologias Utilizadas
 
 - **Apache Airflow** → Orquestração das tarefas  
