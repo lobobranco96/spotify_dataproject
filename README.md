@@ -1,33 +1,28 @@
-🎵 Pipeline ETL com API do Spotify, Airflow e Spark
+# 🎵 Pipeline ETL com API do Spotify, Airflow e Spark
 
-Este repositório contém uma pipeline de dados para coletar, transformar e armazenar dados da API do Spotify utilizando Apache Airflow como orquestrador, Apache Spark para processamento distribuído e MinIO como Data Lake. O ambiente é totalmente dockerizado, garantindo facilidade na configuração e escalabilidade.
+Este repositório contém uma pipeline de dados para coletar, transformar e armazenar dados da API do Spotify utilizando **Apache Airflow** como orquestrador, **Apache Spark** para processamento distribuído e **MinIO** como Data Lake. O ambiente é totalmente **dockerizado**, garantindo facilidade na configuração e escalabilidade.
 
-🏗️ Arquitetura
+## 🏗️ Arquitetura
 
-Coleta de dados: Airflow executa uma DAG que faz requisições à API do Spotify.
+1️⃣ **Coleta de dados**: Airflow executa uma DAG que faz requisições à API do Spotify.  
+2️⃣ **Armazenamento inicial (Raw Layer)**: Os dados coletados são armazenados em um bucket no MinIO.  
+3️⃣ **Processamento com Spark**: Airflow dispara um job Spark via `SparkSubmitOperator` para transformar os dados.  
+4️⃣ **Armazenamento Processado (Processed Layer)**: Os dados transformados são carregados em outro bucket no MinIO.
 
-Armazenamento inicial (Raw Layer): Os dados coletados são armazenados em um bucket no MinIO.
+![Arquitetura da Pipeline](https://github.com/user-attachments/assets/c1fc1ea6-8431-47eb-8786-a40b8a6381b7)  
+*(Substitua por uma imagem do fluxo da arquitetura)*
 
-Processamento com Spark: Airflow dispara um job Spark via SparkSubmitOperator para transformar os dados.
+## 🛠️ Tecnologias Utilizadas
 
-Armazenamento Processado (Processed Layer): Os dados transformados são carregados em outro bucket no MinIO.
+- **Apache Airflow** → Orquestração das tarefas  
+- **Apache Spark** → Processamento distribuído  
+- **MinIO** → Armazenamento de dados (Data Lake)  
+- **Docker** → Gerenciamento do ambiente  
+- **Spotify API** → Fonte dos dados
 
- (Substitua por uma imagem do fluxo da arquitetura)
+## 📂 Estrutura do Projeto
 
-🛠️ Tecnologias Utilizadas
-
-Apache Airflow → Orquestração das tarefas
-
-Apache Spark → Processamento distribuído
-
-MinIO → Armazenamento de dados (Data Lake)
-
-Docker → Gerenciamento do ambiente
-
-Spotify API → Fonte dos dados
-
-📂 Estrutura do Projeto
-
+```bash
 ├── docker/
 │   ├── Spark/
 │   │   └── Dockerfile
@@ -68,10 +63,11 @@ Spotify API → Fonte dos dados
 ├── README.md                  # Documentação do projeto
 └── .env                       # Configurações sensíveis (API Keys, URLs, etc.)
 
-🚀 Como Executar
+## 🚀 Como Executar
 
-1️⃣ Clone o repositório:
+1️⃣ **Clone o repositório**:
 
+```bash
 git clone https://github.com/seu-usuario/etl-spotify-airflow.git
 cd etl-spotify-airflow
 
@@ -113,12 +109,21 @@ Acesse http://localhost:9000 com as credenciais padrão (minioadmin/minioadmin) 
 2️⃣ Transformação: Spark processa os dados do raw/, aplicando limpeza e estruturação.
 3️⃣ Carga: Dados processados são armazenados no bucket processed/.
 
-📌 Próximos Passos
+## 📌 Próximos Passos
 
-Carregar os dados em um Banco de dados
+- **Carregar os dados em um Banco de dados**: Após o processamento, os dados podem ser carregados em um banco de dados relacional ou NoSQL para consultas e visualização.
+- **Criar um dashboard para visualização dos dados**: Um dashboard pode ser construído com ferramentas como Power BI, Tableau ou até mesmo uma aplicação customizada para apresentar os dados de forma visual.
 
-Criar dashboard para visualização dos dados
+## 💡 Contribuições
 
-💡 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar PRs.
+Contribuições são bem-vindas! Se você tiver alguma sugestão, melhorias ou correções, sinta-se à vontade para abrir uma **issue** ou enviar um **Pull Request (PR)**. Seu feedback é importante para melhorar o projeto!
 
-📩 Contato: Seu Email | LinkedIn
+## 📩 Contato
+
+## 📚 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+Obrigado por conferir o projeto! 🚀
