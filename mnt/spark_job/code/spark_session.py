@@ -8,6 +8,15 @@ logger = logging.getLogger(__name__)
 
 
 def create_spark_session():
+    """
+    Cria e configura uma sessão do Apache Spark.
+    
+    Returns:
+        SparkSession: Sessão Spark configurada.
+    
+    Raises:
+        Exception: Se houver falha na criação da sessão.
+    """
     try:
         logger.info("Iniciando a configuração da Spark Session")
         

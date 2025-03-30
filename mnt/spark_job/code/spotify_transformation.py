@@ -1,3 +1,21 @@
+"""
+Módulo de transformação de dados do Spotify para processamento com PySpark.
+
+Este módulo contém funções para processar e transformar dados de álbuns, artistas e músicas
+a partir de um DataFrame do PySpark extraído de arquivos JSON brutos.
+
+Funções:
+    - process_albums: Processa os dados dos álbuns.
+    - process_artists: Processa os dados dos artistas.
+    - process_songs: Processa os dados das músicas.
+
+Requisitos:
+    - O DataFrame de entrada deve conter a coluna 'items', que armazena os dados a serem extraídos.
+
+Retorno:
+    - DataFrames processados com os dados limpos e estruturados.
+"""
+
 from pyspark.sql.functions import col, explode, explode_outer, to_date, when, size
 from pyspark.sql import DataFrame
 import logging
@@ -5,16 +23,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 def process_albums(df: DataFrame) -> DataFrame:
-    """Process album data from a DataFrame.
-
+    """
+    Processa os dados dos álbuns a partir do DataFrame.
+    
     Args:
-        df (DataFrame): Input PySpark DataFrame with 'items' column
-
+        df (DataFrame): DataFrame de entrada com a coluna 'items'.
+    
     Returns:
-        DataFrame: Processed album data
-
+        DataFrame: DataFrame processado contendo informações dos álbuns.
+    
     Raises:
-        ValueError: If required columns are missing
+        ValueError: Se as colunas obrigatórias estiverem ausentes.
     """
     required_columns = {'items'}
     if not required_columns.issubset(set(df.columns)):
@@ -34,35 +53,41 @@ def process_albums(df: DataFrame) -> DataFrame:
     df = df.withColumn("release_date", to_date(col("release_date")))
     return df
 
-
-def process_artists(df):
+def process_artists(df: DataFrame) -> DataFrame:
+    """
+    Processa os dados dos artistas a partir do DataFrame.
+    
+    Args:
+        df (DataFrame): DataFrame de entrada com a coluna 'items'.
+    
+    Returns:
+        DataFrame: DataFrame processado contendo informações dos artistas.
+    
+    Raises:
+        ValueError: Se as colunas obrigatórias estiverem ausentes.
+    """
     required_columns = {'items'}
 
-    # Validação das colunas
     if not required_columns.issubset(set(df.columns)):
         missing_cols = required_columns - set(df.columns)
         logger.error(f"DataFrame está faltando colunas obrigatórias: {missing_cols}")
         raise ValueError(f"DataFrame missing required columns: {missing_cols}")
 
     try:
-        # Explodindo os itens
         df_items_exploded = df.select(explode(col("items")).alias("item"))
-
-        # Extraindo artistas (com validação de 'track')
         df_artists_exploded = df_items_exploded.select(
             explode_outer(col("item").getField("track").getField("artists")).alias("artist")
         )
 
-        # Selecionando e limpando os dados
         df_artists = (
             df_artists_exploded.select(
                 col("artist.id").alias("artist_id"),
                 col("artist.name").alias("artist_name"),
                 col("artist.external_urls.spotify").alias("external_url")
             )
-            .distinct()  # Evita processamento redundante antes de drop_duplicates
-            .drop_duplicates(["artist_id"])  # Mantém apenas artistas únicos
-            .filter(col("artist_id").isNotNull())  # Remove registros inválidos
+            .distinct()
+            .drop_duplicates(["artist_id"])
+            .filter(col("artist_id").isNotNull())
         )
 
         return df_artists
@@ -71,18 +96,18 @@ def process_artists(df):
         logger.error(f"Erro ao processar artistas: {str(e)}")
         raise Exception(f"Erro ao processar artistas: {str(e)}")
 
-
 def process_songs(df: DataFrame) -> DataFrame:
-    """Process song data from a DataFrame.
-
+    """
+    Processa os dados das músicas a partir do DataFrame.
+    
     Args:
-        df (DataFrame): Input PySpark DataFrame with 'items' column
-
+        df (DataFrame): DataFrame de entrada com a coluna 'items'.
+    
     Returns:
-        DataFrame: Processed song data
-
+        DataFrame: DataFrame processado contendo informações das músicas.
+    
     Raises:
-        ValueError: If required columns are missing
+        ValueError: Se as colunas obrigatórias estiverem ausentes.
     """
     required_columns = {'items'}
     if not required_columns.issubset(set(df.columns)):

@@ -53,7 +53,17 @@ with DAG(
 
     def fetch_data(**kwargs):
         """
-        Busca os dados da playlist no Spotify e os salva no MinIO.
+        Inicia o processo de ingestão de dados da playlist no Spotify e salva no MinIO.
+        
+        A função busca os dados de uma playlist do Spotify, extrai as faixas e
+        armazena em um bucket S3 (MinIO). O caminho do arquivo gerado é retornado
+        e enviado para o próximo passo no DAG via XCom.
+        
+        Args:
+            kwargs (dict): Parâmetros do contexto do Airflow, incluindo XCom.
+        
+        Returns:
+            str: Caminho do arquivo no MinIO onde os dados da playlist foram salvos.
         """
         logging.info("Iniciando ingestão de dados do Spotify")
         data_ingestion = DataIngestion(client_id=client_id, client_secret=client_secret)
@@ -65,7 +75,6 @@ with DAG(
            BUCKET_NAME=config.raw_bucket
         )
         return file_path
-        #logging.info(f"Fetched data file at {file_path}")
     
     def spark_dtransformation(**kwargs):
             """
