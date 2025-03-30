@@ -9,9 +9,9 @@ class ParquetWriter:
     def __init__(self, mode):
         self.mode = mode
 
-    def dataframe_writer(self, df, bucket, folder):
+    def dataframe_writer(self, df, bucket_path, nome_arquivo):
 
-        file_path = f"{bucket}/{folder}"
+        file_path = f"{bucket_path}/{nome_arquivo}.parquet"
         
         try:
             df.write \
@@ -23,3 +23,6 @@ class ParquetWriter:
             traceback_message = traceback.format_exc()
             print(traceback_message)
             raise e
+        
+
+    

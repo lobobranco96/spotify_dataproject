@@ -21,7 +21,7 @@ FROM bitnami/spark:3.5.3
 WORKDIR /app
 
 USER root
-RUN install_packages curl wget
+RUN install_packages curl wget python3.11 python3.11-venv python3.11-dev
 
 # Baixa a versão adequada do Guava (necessária para o Hadoop AWS)
 RUN rm /opt/bitnami/spark/jars/guava-14.0.1.jar
@@ -39,5 +39,9 @@ ENV SPARK_CLASSPATH="/opt/bitnami/spark/jars/*"
 
 # Configurar permissões para a pasta de JARs do Spark
 RUN chmod -R 777 /opt/bitnami/spark/jars
+
+# Garante que o Spark utilize Python 3.11
+ENV PYSPARK_PYTHON=/usr/bin/python3.11
+ENV PYSPARK_DRIVER_PYTHON=/usr/bin/python3.11
 
 USER 1001

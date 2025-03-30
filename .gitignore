@@ -15,8 +15,4 @@ spotify_credentials.txt
 run.txt
 astro_test/
 services/conf/
-<<<<<<< HEAD
-mnt/airflow/dags/jars/
-=======
 mnt/spark_job/jars/
->>>>>>> 9f824f7 (fix: dag file not found, spark job error: não conseguia ler arquivos no minio)

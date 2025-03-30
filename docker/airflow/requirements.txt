@@ -1,7 +1,7 @@
 apache-airflow==2.9.2
 apache-airflow-providers-amazon
 apache-airflow-providers-apache-spark
-pyspark
+pyspark==3.5.3
 findspark
 python-dotenv
 spotipy

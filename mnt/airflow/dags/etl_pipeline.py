@@ -75,8 +75,7 @@ with DAG(
             file_path = ti.xcom_pull(task_ids='fetch_data')
             logging.info(f"Transforming data from file: {file_path}")
 
-            print(f"File Path: {file_path}")
-            print(f"Processed Bucket: {config.processed_bucket}")
+            logging.info(f"File Path: {file_path}")
             return SparkSubmitOperator(
             task_id='spark_submit_task',
             application='/opt/spark_job/data_transformation.py',
