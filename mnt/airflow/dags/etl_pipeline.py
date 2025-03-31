@@ -3,12 +3,14 @@ import logging
 from python.extract.fetch_spotify_data import DataIngestion
 from python  import config
 from dotenv import load_dotenv
+from datetime import datetime
 
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from datetime import datetime
+from airflow.providers.postgres.operators.postgres import PostgresOperator
+
 import boto3
 
 #variaveis ambiente
@@ -51,7 +53,7 @@ with DAG(
     init = EmptyOperator(task_id="inicio")
     finish = EmptyOperator(task_id="fim_pipeline")
 
-    def fetch_data(**kwargs):
+    def fetch_data():
         """
         Inicia o processo de ingestão de dados da playlist no Spotify e salva no MinIO.
         
@@ -115,6 +117,30 @@ with DAG(
        python_callable=spark_dtransformation,
         op_kwargs={},
     )
+
+    create_tables = PostgresOperator(
+        task_id="create_tables_task",
+        postgres_conn_id="postgres_default", 
+        sql="/opt/airflow/dags/sql/create_table.sql"  
+    )
+
+    minio_to_postgres_task = SparkSubmitOperator(
+        task_id='minio_to_postgres_task',
+        application='/opt/spark_job/minio_to_postgres.py',
+        conn_id='spark_default',
+        conf={
+            "spark.executor.memory": "512m",
+            "spark.executor.cores": "1",
+            "spark.jars": "/opt/spark_job/jars/aws-java-sdk-bundle-1.12.262.jar,"
+            "/opt/spark_job/jars/hadoop-aws-3.3.4.jar",
+            "spark.hadoop.fs.s3a.endpoint": MINIO_ENDPOINT,
+            "spark.hadoop.fs.s3a.access.key": MINIO_ACCESS_KEY,
+            "spark.hadoop.fs.s3a.secret.key": MINIO_SECRET_KEY,
+            "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem",
+            "spark.hadoop.fs.s3a.path.style.access": "true"
+        },
+        verbose=True)
+
     # Definição da sequência do pipeline
-    init >> fetch_task >> transformation_task >> finish
+    init >> fetch_task >> transformation_task >> create_tables >> minio_to_postgres_task >>finish
 
