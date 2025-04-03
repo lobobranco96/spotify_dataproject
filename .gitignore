@@ -16,3 +16,5 @@ run.txt
 astro_test/
 services/conf/
 mnt/spark_job/jars/
+mnt/minio/.minio.sys
+mnt/minio/minio-client

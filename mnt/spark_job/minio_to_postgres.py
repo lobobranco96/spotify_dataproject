@@ -4,8 +4,6 @@ from code.spark_session import create_spark_session
 
 logger = logging.getLogger(__name__)
 
-
-
 def minio_postgres(spark):
     try:
         # Caminho do bucket
@@ -22,17 +20,35 @@ def minio_postgres(spark):
             return  # Encerra a função se a leitura falhar
 
         # Configuração do PostgreSQL
-        postgres_url = "jdbc:postgresql://localhost:5432/airflow"
+        postgres_url = "jdbc:postgresql://postgres_airflow:5432/airflow"
         postgres_properties = {
             "user": "airflow",
             "password": "airflow",
-            "driver": "org.postgresql.Driver"
+            "driver": "org.postgresql.Driver",
+            "currentSchema": "spotify"
         }
 
-        # Escrever os DataFrames no PostgreSQL
-        artists_df.write.jdbc(url=postgres_url, table="artist", mode="append", properties=postgres_properties)
-        albums_df.write.jdbc(url=postgres_url, table="album", mode="append", properties=postgres_properties)
-        songs_df.write.jdbc(url=postgres_url, table="song", mode="append", properties=postgres_properties)
+        # Escrever os DataFrames no 
+        logger.info("Escrevendo artists_df no Postgres!")
+        artists_df.write.jdbc(
+            url=postgres_url,
+            table="spotify.artist",
+            mode="append",
+            properties=postgres_properties)
+        
+        logger.info("Escrevendo albums_df no Postgres!")
+        albums_df.write.jdbc(
+            url=postgres_url,
+            table="spotify.album",
+            mode="append",
+            properties=postgres_properties)
+        
+        logger.info("Escrevendo songs_df no Postgres!")
+        songs_df.write.jdbc(
+            url=postgres_url,
+            table="spotify.song",
+            mode="append",
+            properties=postgres_properties)
 
         logger.info("Dados inseridos no PostgreSQL com sucesso!")
 

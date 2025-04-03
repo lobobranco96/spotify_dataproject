@@ -50,7 +50,13 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 │   │   │   ├── spark_session.py
 │   │   │   ├── spotify_transformation.py
 │   │   ├── jars/
+│   │   │   ├── postgresql-42.7.5.jar
+│   │   │   ├── aws-java-sdk-bundle-1.12.262.jar
+│   │   │   ├── hadoop-aws-3.3.4.jar
 │   │   ├── data_transformation.py
+│   │   ├── minio_to_postgres.py
+│   ├── sql/
+│   │   ├── create_table.sql
 │   ├── services/
 │   │   ├── orchestration.yml
 │   │   ├── processing.yml
@@ -105,11 +111,9 @@ Acesse http://localhost:9000 com as credenciais padrão (minioadmin/minioadmin) 
 1️⃣ Ingestão: A DAG do Airflow coleta dados da API do Spotify e salva no MinIO (raw/)
 2️⃣ Transformação: Spark processa os dados do raw/, aplicando limpeza e estruturação.
 3️⃣ Carga: Dados processados são armazenados no bucket processed/.
-
-## 📌 Próximos Passos
-
-- **Carregar os dados em um Banco de dados**: Após o processamento, os dados podem ser carregados em um banco de dados relacional ou NoSQL para consultas e visualização.
-- **Criar um dashboard para visualização dos dados**: Um dashboard pode ser construído com ferramentas como Power BI, Tableau ou até mesmo uma aplicação customizada para apresentar os dados de forma visual.
+4️⃣ Criar de Schema e tabelas: Schema Spotify. Tabelas album, artists e songs.
+5️⃣ Carregar os dados em um Banco de dados: Após o processamento, os dados são carregados no PostgreSQL via PySpark com conexão JDBC.
+6️⃣ Criar um dashboard para visualização dos dados: Um dashboard construído com o Superset apresentar os dados de forma visual.
 
 ## 💡 Contribuições
 

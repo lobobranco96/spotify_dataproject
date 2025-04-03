@@ -1,0 +1,83 @@
+[2025-04-03T22:09:17.824+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2025-04-03T22:09:17.855+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_pipeline.create_tables_task manual__2025-03-26T13:33:39.761724+00:00 [queued]>
+[2025-04-03T22:09:17.864+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_pipeline.create_tables_task manual__2025-03-26T13:33:39.761724+00:00 [queued]>
+[2025-04-03T22:09:17.864+0000] {taskinstance.py:2306} INFO - Starting attempt 7 of 8
+[2025-04-03T22:09:17.896+0000] {taskinstance.py:2330} INFO - Executing <Task(PostgresOperator): create_tables_task> on 2025-03-26 13:33:39.761724+00:00
+[2025-04-03T22:09:17.902+0000] {standard_task_runner.py:63} INFO - Started process 224 to run task
+[2025-04-03T22:09:17.906+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'etl_pipeline', 'create_tables_task', 'manual__2025-03-26T13:33:39.761724+00:00', '--job-id', '140', '--raw', '--subdir', 'DAGS_FOLDER/etl_pipeline.py', '--cfg-path', '/tmp/tmp9ls3ovvd']
+[2025-04-03T22:09:17.909+0000] {standard_task_runner.py:91} INFO - Job 140: Subtask create_tables_task
+[2025-04-03T22:09:17.987+0000] {task_command.py:426} INFO - Running <TaskInstance: etl_pipeline.create_tables_task manual__2025-03-26T13:33:39.761724+00:00 [running]> on host 368b3be21c0d
+[2025-04-03T22:09:18.138+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='lobobranco' AIRFLOW_CTX_DAG_ID='etl_pipeline' AIRFLOW_CTX_TASK_ID='create_tables_task' AIRFLOW_CTX_EXECUTION_DATE='2025-03-26T13:33:39.761724+00:00' AIRFLOW_CTX_TRY_NUMBER='7' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-03-26T13:33:39.761724+00:00'
+[2025-04-03T22:09:18.140+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2025-04-03T22:09:18.166+0000] {sql.py:295} INFO - Executing: CREATE SCHEMA IF NOT EXISTS spotify;
+
+CREATE TABLE IF NOT EXISTS spotify.artist (
+    artist_id VARCHAR PRIMARY KEY,
+    artist_name VARCHAR NOT NULL,
+    external_url VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS spotify.album (
+    album_id VARCHAR PRIMARY KEY,
+    album_name VARCHAR NOT NULL,
+    release_date DATE,
+    total_tracks BIGINT,
+    url VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS spotify.song (
+    song_id VARCHAR PRIMARY KEY,
+    song_name VARCHAR NOT NULL,
+    duration_ms BIGINT,
+    url VARCHAR,
+    popularity BIGINT,
+    song_added DATE,
+    album_id VARCHAR REFERENCES spotify.album(album_id),
+    artist_id VARCHAR REFERENCES spotify.artist(artist_id)
+);
+[2025-04-03T22:09:18.184+0000] {base.py:84} INFO - Using connection ID 'postgres_default' for task execution.
+[2025-04-03T22:09:18.210+0000] {base.py:84} INFO - Using connection ID 'postgres_default' for task execution.
+[2025-04-03T22:09:18.212+0000] {sql.py:186} WARNING - This setter is for backward compatibility and should not be used.
+Since the introduction of connection property, the providers listed below breaks due to assigning value to self.connection in their __init__ method.
+* apache-***-providers-mysql<5.7.1
+* apache-***-providers-elasticsearch<5.5.1
+* apache-***-providers-postgres<5.13.0
+[2025-04-03T22:09:18.221+0000] {sql.py:511} INFO - Running statement: CREATE SCHEMA IF NOT EXISTS spotify;
+
+CREATE TABLE IF NOT EXISTS spotify.artist (
+    artist_id VARCHAR PRIMARY KEY,
+    artist_name VARCHAR NOT NULL,
+    external_url VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS spotify.album (
+    album_id VARCHAR PRIMARY KEY,
+    album_name VARCHAR NOT NULL,
+    release_date DATE,
+    total_tracks BIGINT,
+    url VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS spotify.song (
+    song_id VARCHAR PRIMARY KEY,
+    song_name VARCHAR NOT NULL,
+    duration_ms BIGINT,
+    url VARCHAR,
+    popularity BIGINT,
+    song_added DATE,
+    album_id VARCHAR REFERENCES spotify.album(album_id),
+    artist_id VARCHAR REFERENCES spotify.artist(artist_id)
+);, parameters: None
+[2025-04-03T22:09:18.867+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.11/site-packages/***/providers/common/sql/hooks/sql.py:470 DeprecationWarning: Import of fetch_all_handler from the '***.providers.common.sql.hooks' module is deprecated and will
+be removed in the future. Please import it from '***.providers.common.sql.hooks.handlers'.
+[2025-04-03T22:09:18.880+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.11/site-packages/***/providers/common/sql/hooks/sql.py:471 DeprecationWarning: Import of return_single_query_results from the '***.providers.common.sql.hooks' module is deprecated and will
+be removed in the future. Please import it from '***.providers.common.sql.hooks.handlers'.
+[2025-04-03T22:09:18.938+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.11/site-packages/***/providers/common/sql/hooks/sql.py:486 DeprecationWarning: Import of return_single_query_results from the '***.providers.common.sql.hooks' module is deprecated and will
+be removed in the future. Please import it from '***.providers.common.sql.hooks.handlers'.
+[2025-04-03T22:09:18.940+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.11/site-packages/***/providers/common/sql/operators/sql.py:311 DeprecationWarning: Import of return_single_query_results from the '***.providers.common.sql.hooks' module is deprecated and will
+be removed in the future. Please import it from '***.providers.common.sql.hooks.handlers'.
+[2025-04-03T22:09:18.940+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2025-04-03T22:09:18.951+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=etl_pipeline, task_id=create_tables_task, run_id=manual__2025-03-26T13:33:39.761724+00:00, execution_date=20250326T133339, start_date=20250403T220917, end_date=20250403T220918
+[2025-04-03T22:09:19.043+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2025-04-03T22:09:19.076+0000] {taskinstance.py:3503} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-04-03T22:09:19.104+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

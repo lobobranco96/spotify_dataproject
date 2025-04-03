@@ -1,0 +1,51 @@
+services:
+  superset:
+    image: apache/superset:latest
+    container_name: superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=my_secret_key
+      - ADMIN_USERNAME=admin
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=admin
+      - DATABASE_URL=postgresql+psycopg2://superset:superset@postgres_superset:5432/superset_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - postgres_superset
+    networks:
+      - spotify_project
+    volumes:
+      - superset_home:/app/superset_home
+
+  postgres_superset:
+    image: postgres:latest
+    container_name: postgres_superset
+    restart: always
+    environment:
+      - POSTGRES_USER=superset
+      - POSTGRES_PASSWORD=superset
+      - POSTGRES_DB=superset_db
+    networks:
+      - spotify_project
+    volumes:
+      - superset_db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: superset_redis
+    restart: always
+    networks:
+      - spotify_project
+
+volumes:
+  superset_home:
+  superset_db_data:
+
+networks:
+  spotify_project:
+    external: true

@@ -118,10 +118,13 @@ with DAG(
         op_kwargs={},
     )
 
+    with open("/opt/airflow/sql/create_table.sql", "r") as file:
+        query = file.read()
+
     create_tables = PostgresOperator(
         task_id="create_tables_task",
         postgres_conn_id="postgres_default", 
-        sql="/opt/airflow/dags/sql/create_table.sql"  
+        sql=query#"/opt/sql/create_table.sql"  
     )
 
     minio_to_postgres_task = SparkSubmitOperator(
@@ -132,7 +135,8 @@ with DAG(
             "spark.executor.memory": "512m",
             "spark.executor.cores": "1",
             "spark.jars": "/opt/spark_job/jars/aws-java-sdk-bundle-1.12.262.jar,"
-            "/opt/spark_job/jars/hadoop-aws-3.3.4.jar",
+            "/opt/spark_job/jars/hadoop-aws-3.3.4.jar,"
+            "/opt/spark_job/jars/postgresql-42.7.5.jar,",
             "spark.hadoop.fs.s3a.endpoint": MINIO_ENDPOINT,
             "spark.hadoop.fs.s3a.access.key": MINIO_ACCESS_KEY,
             "spark.hadoop.fs.s3a.secret.key": MINIO_SECRET_KEY,

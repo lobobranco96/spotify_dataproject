@@ -268,3 +268,48 @@ jinja2.exceptions.TemplateNotFound: '/opt/airflow/dags/sql/create_table.sql' not
 [2025-03-31T00:07:56.461+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:07:56.461+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2025-03-31T00:07:56.491+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:07:56.489+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_pipeline to None, run_after=None
 [2025-03-31T00:07:56.562+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.523 seconds
+[2025-03-31T00:08:26.814+0000] {processor.py:161} INFO - Started process (PID=625) to work on /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:26.815+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2025-03-31T00:08:26.817+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:26.817+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:27.249+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:27.248+0000] {templater.py:93} ERROR - Failed to resolve template field 'sql'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/template/templater.py", line 91, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: '/opt/airflow/dags/sql/create_table.sql' not found in search path: '/opt/airflow/dags'
+[2025-03-31T00:08:27.255+0000] {processor.py:840} INFO - DAG(s) 'etl_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:27.291+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:27.291+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-03-31T00:08:27.308+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:27.308+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_pipeline to None, run_after=None
+[2025-03-31T00:08:27.353+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.546 seconds
+[2025-03-31T00:08:57.466+0000] {processor.py:161} INFO - Started process (PID=630) to work on /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:57.467+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2025-03-31T00:08:57.469+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:57.469+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:57.792+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:57.791+0000] {templater.py:93} ERROR - Failed to resolve template field 'sql'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/template/templater.py", line 91, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: '/opt/airflow/dags/sql/create_table.sql' not found in search path: '/opt/airflow/dags'
+[2025-03-31T00:08:57.795+0000] {processor.py:840} INFO - DAG(s) 'etl_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:08:57.826+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:57.826+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-03-31T00:08:57.840+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:08:57.840+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_pipeline to None, run_after=None
+[2025-03-31T00:08:57.882+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.423 seconds
+[2025-03-31T00:09:28.106+0000] {processor.py:161} INFO - Started process (PID=635) to work on /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:09:28.108+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2025-03-31T00:09:28.110+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:09:28.109+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:09:28.441+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:09:28.440+0000] {templater.py:93} ERROR - Failed to resolve template field 'sql'
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/template/templater.py", line 91, in resolve_template_files
+    setattr(self, field, env.loader.get_source(env, content)[0])  # type: ignore
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: '/opt/airflow/dags/sql/create_table.sql' not found in search path: '/opt/airflow/dags'
+[2025-03-31T00:09:28.444+0000] {processor.py:840} INFO - DAG(s) 'etl_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2025-03-31T00:09:28.479+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:09:28.479+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-03-31T00:09:28.497+0000] {logging_mixin.py:188} INFO - [2025-03-31T00:09:28.496+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_pipeline to None, run_after=None
+[2025-03-31T00:09:28.541+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.442 seconds
