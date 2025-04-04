@@ -9,6 +9,7 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 2️⃣ **Armazenamento inicial (Raw Layer)**: Os dados coletados são armazenados em um bucket no MinIO.  
 3️⃣ **Processamento com Spark**: Airflow dispara um job Spark via `SparkSubmitOperator` para transformar os dados.  
 4️⃣ **Armazenamento Processado (Processed Layer)**: Os dados transformados são carregados em outro bucket no MinIO.
+5️⃣ **Carregamento no Banco de Dados**: Os dados processados são armazenados no PostgreSQL.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -58,7 +59,7 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 │   │   ├── minio_to_postgres.py
 │   ├── sql/
 │   │   ├── create_table.sql
-│   ├── services/
+├──  services/
 │   │   ├── orchestration.yml
 │   │   ├── processing.yml
 │   │   ├── storage.yml
@@ -66,7 +67,7 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 │   │   │   └── credentials.conf
 ├── README.md                  # Documentação do projeto
 └── .env                       # Configurações sensíveis (API Keys, URLs, etc.)
-
+```
 ## 🚀 Como Executar
 
 1️⃣ **Clone o repositório**:
@@ -74,13 +75,14 @@ Este repositório contém uma pipeline de dados para coletar, transformar e arma
 ```bash
 git clone https://github.com/seu-usuario/etl-spotify-airflow.git
 cd etl-spotify-airflow
+```
 
 2️⃣ Configure as variáveis de ambiente
 
 Crie um arquivo .env na raiz do projeto e adicione:
-
-SPOTIFY_CLIENT_ID=your_client_id
-SPOTIFY_CLIENT_SECRET=your_client_secret
+```bash
+SPOTIFY_CLIENT_ID=seu_client_id
+SPOTIFY_CLIENT_SECRET=seu_client_secret
 MINIO_ROOT_USER=admin
 MINIO_ROOT_PASSWORD=password
 MINIO_DOMAIN=storage
@@ -90,41 +92,41 @@ AWS_DEFAULT_REGION=us-east-1
 AWS_ACCESS_KEY_ID=admin
 AWS_SECRET_ACCESS_KEY=password
 S3_ENDPOINT=http://minio:9000
+```
 
 3️⃣ Suba o ambiente Docker
-
+```bash
 docker compose -f services/orchestration.yml up -d --build
 docker compose -f services/processing.yml up -d --build
 docker compose -f services/storage.yml up -d 
-
+```
 Isso iniciará os serviços do Airflow, Spark e MinIO.
 
 4️⃣ Acesse a interface do Airflow
 
+Abra http://localhost:8080 e configure na aba connections para o spark_default e postgres_default.
+
+5️⃣ Acesse a interface do Airflow
+
 Abra http://localhost:8080 e ative a DAG etl_pipeline.
 
-5️⃣ Verifique os dados no MinIO
+6️⃣ Verifique os dados no MinIO
 
 Acesse http://localhost:9000 com as credenciais padrão (minioadmin/minioadmin) para verificar os buckets raw e processed.
 
-📊 Fluxo de Execução
 
+📊 Fluxo de Execução
+```bash
 1️⃣ Ingestão: A DAG do Airflow coleta dados da API do Spotify e salva no MinIO (raw/)
 2️⃣ Transformação: Spark processa os dados do raw/, aplicando limpeza e estruturação.
 3️⃣ Carga: Dados processados são armazenados no bucket processed/.
 4️⃣ Criar de Schema e tabelas: Schema Spotify. Tabelas album, artists e songs.
 5️⃣ Carregar os dados em um Banco de dados: Após o processamento, os dados são carregados no PostgreSQL via PySpark com conexão JDBC.
-6️⃣ Criar um dashboard para visualização dos dados: Um dashboard construído com o Superset apresentar os dados de forma visual.
-
+6️⃣ Criar um dashboard para visualização dos dados: Um dashboard construído com o Superset para apresentar os dados de forma visual.
+```
 ## 💡 Contribuições
 
 Contribuições são bem-vindas! Se você tiver alguma sugestão, melhorias ou correções, sinta-se à vontade para abrir uma **issue** ou enviar um **Pull Request (PR)**. Seu feedback é importante para melhorar o projeto!
-
-## 📩 Contato
-
-## 📚 Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
 
