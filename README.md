@@ -3,6 +3,7 @@
 Este repositório contém uma pipeline de dados para coletar, transformar e armazenar dados da API do Spotify utilizando **Apache Airflow** como orquestrador, **Apache Spark** para processamento distribuído e **MinIO** como Data Lake. O ambiente é totalmente **dockerizado**, garantindo facilidade na configuração e escalabilidade.
 
 ## 🏗️ Arquitetura
+![Image](https://github.com/user-attachments/assets/d7cee85b-764e-4bb5-a13a-19201d145b16)
 
 1️⃣ **Coleta de dados**: Airflow executa uma DAG que faz requisições à API do Spotify.  
 2️⃣ **Armazenamento inicial (Raw Layer)**: Os dados coletados são armazenados em um bucket no MinIO.  
