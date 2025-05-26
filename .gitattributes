@@ -1,2 +1,2 @@
-*.roff linguist-detectable=false
+*.roff linguist-vendored
 docs/* linguist-vendored
